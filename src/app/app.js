@@ -1,29 +1,48 @@
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import compression from 'compression';
-import morgan from 'morgan';
-import dotenv from 'dotenv';
-import routes from '../routes/index.js';
-import errorHandler from '../middlewares/errorHandler.js';
-import logger from '../utils/logger.js';
+import express from "express";
+import cors from "cors";
+import compression from "compression";
+import morgan from "morgan";
+import dotenv from "dotenv";
+import router from "../routes/index.js";
+import errorHandler from "../middlewares/errorHandler.js";
+import logger from "../utils/logger.js";
+import { connectDB } from "../config/database.js";
 
 dotenv.config();
 
 const app = express();
 
-// Middleware
+connectDB();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: process.env.CORS_ORIGIN || '*', credentials: true }));
-app.use(helmet());
+
+const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [
+  "http://localhost:3000",
+];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS Not Allowed"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 app.use(compression());
-app.use(morgan('dev', { stream: logger.stream }));
+
+// Logger
+const stream = logger?.stream || { write: (message) => console.log(message) };
+app.use(morgan("dev", { stream }));
 
 // Routes
-app.use('/api/v1', routes);
+app.use("/api/v1", router);
 
-// Error Handling
+// Error Handling Middleware
 app.use(errorHandler);
 
 export default app;
