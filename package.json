@@ -1,0 +1,37 @@
+{
+	"name": "my-app",
+	"version": "1.0.0",
+	"private": true,
+	"description": "A basic Express.js application",
+	"type": "module",
+	"main": "src/index.js",
+	"scripts": {
+		"start": "node ./src/index.js",
+		"dev": "nodemon ./src/index.js"
+	},
+	"dependencies": {
+		"compression": "^1.7.4",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"helmet": "^5.0.2",
+		"mongoose": "^6.4.4",
+		"morgan": "^1.10.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.22"
+	},
+	"engines": {
+		"node": ">=16.0.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/GausAlMunirTushar/create-express-app.git"
+	},
+	"author": "Your Name",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/GausAlMunirTushar/create-express-app/issues"
+	},
+	"homepage": "https://github.com/GausAlMunirTushar/create-express-app"
+}
